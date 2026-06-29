@@ -1,0 +1,6 @@
+# segredos locais — NUNCA versionar (prod = GCP Secret Manager)
+.env
+
+# build / runtime
+*.log
+.run/

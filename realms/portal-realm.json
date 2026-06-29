@@ -1,0 +1,92 @@
+{
+  "realm": "portal",
+  "displayName": "Portal Telemedicina",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "_comment": "Realm UNICO da empresa (P-003). Cada produto = um client; papeis do produto = CLIENT ROLES desse client. Uma identidade por pessoa (SSO entre produtos). Hoje so o Doctor-Hub consome; Teleconsulta/Telediagnostico entram via migracao/federacao futura (decisao a parte, com os donos).",
+  "clients": [
+    {
+      "clientId": "doctor-hub-web",
+      "name": "Doctor-Hub Web (PWA)",
+      "description": "Client publico de LOGIN do Doctor-Hub (SPA). OIDC Authorization Code + PKCE.",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "rootUrl": "http://localhost:5174",
+      "baseUrl": "/",
+      "redirectUris": ["http://localhost:5174/*"],
+      "webOrigins": ["http://localhost:5174", "+"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:5174/*"
+      }
+    },
+    {
+      "clientId": "doctor-hub-api",
+      "name": "Doctor-Hub API (resource server)",
+      "description": "Client RESOURCE do Doctor-Hub. Define os papeis do produto como CLIENT ROLES; a API valida o JWT por esta audiencia.",
+      "enabled": true,
+      "bearerOnly": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "roles": {
+    "client": {
+      "doctor-hub-api": [
+        { "name": "admin",     "description": "Administrador do Doctor-Hub (gestao de usuarios/config)" },
+        { "name": "demandas",  "description": "Demandas Medicas (cockpit de capacidade)" },
+        { "name": "regulacao", "description": "Regulacao (cliente; da o de acordo / solicita)" },
+        { "name": "gestor",    "description": "Gestor (unidade; assume slots e agenda)" }
+      ]
+    }
+  },
+  "users": [
+    {
+      "username": "mariana",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Mariana",
+      "lastName": "Rabelo",
+      "email": "mariana@doctorhub.local",
+      "credentials": [{ "type": "password", "value": "Dev@12345", "temporary": false }],
+      "clientRoles": { "doctor-hub-api": ["demandas"] }
+    },
+    {
+      "username": "aldair",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Aldair",
+      "lastName": "Moura",
+      "email": "aldair@doctorhub.local",
+      "credentials": [{ "type": "password", "value": "Dev@12345", "temporary": false }],
+      "clientRoles": { "doctor-hub-api": ["regulacao"] }
+    },
+    {
+      "username": "eronildes",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Eronildes",
+      "lastName": "Bastos",
+      "email": "eronildes@doctorhub.local",
+      "credentials": [{ "type": "password", "value": "Dev@12345", "temporary": false }],
+      "clientRoles": { "doctor-hub-api": ["gestor"] }
+    },
+    {
+      "username": "admin-dh",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "Doctor-Hub",
+      "email": "admin@doctorhub.local",
+      "credentials": [{ "type": "password", "value": "Dev@12345", "temporary": false }],
+      "clientRoles": { "doctor-hub-api": ["admin"] }
+    }
+  ]
+}

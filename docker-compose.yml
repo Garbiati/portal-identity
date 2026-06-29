@@ -1,0 +1,19 @@
+services:
+  # IdP da empresa (P-003). DEV: start-dev (H2 em memoria) + import do realm a cada boot —
+  # efemero de proposito (a fonte e o realms/*.json versionado). PROD usa DB proprio (Cloud SQL)
+  # + modo `start` persistente — fica para o slice de producao.
+  #
+  # network_mode: host — neste ambiente o port-forward do Docker (`-p`) nao encaminha trafego
+  # de forma confiavel; com host networking o Keycloak escuta direto no loopback do host.
+  # Porta 8089 (app/admin) porque a 8080 ja e usada por outro processo; health em :9000.
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: portal-keycloak
+    network_mode: host
+    command: ["start-dev", "--import-realm", "--http-port=8089"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:?defina KEYCLOAK_ADMIN no .env}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?defina KEYCLOAK_ADMIN_PASSWORD no .env}
+      KC_HEALTH_ENABLED: "true"
+    volumes:
+      - ./realms:/opt/keycloak/data/import:ro
