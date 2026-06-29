@@ -1,7 +1,7 @@
 # Decisões de Identidade (ADR local) — portal-identity
 
 > Decisões **deste repo**. As transversais à empresa também entram em
-> `../../../portal-platform/docs/decisions/platform-decisions.md` (série P-xxx).
+> `../../../../docs/decisions/platform-decisions.md` (série P-xxx).
 
 | ID | Decisão | Confirmado em | Notas |
 |----|---------|---------------|-------|

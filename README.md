@@ -1,7 +1,7 @@
 # portal-identity — Plataforma de Identidade (Portal Telemedicina)
 
 > **IdP da empresa.** Centraliza autenticação/SSO de toda a Portal Telemedicina via **Keycloak**.
-> Repo de **infra compartilhada** — não tem código de app. Governança: ver [`../portal-platform`](../portal-platform)
+> Repo de **infra compartilhada** — não tem código de app. Governança: ver [`../..`](../..)
 > (constituição da empresa) + decisão de plataforma **P-003**.
 
 ## Por que existe

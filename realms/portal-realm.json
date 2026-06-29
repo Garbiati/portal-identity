@@ -7,7 +7,6 @@
   "loginWithEmailAllowed": true,
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": true,
-  "_comment": "Realm UNICO da empresa (P-003). Cada produto = um client; papeis do produto = CLIENT ROLES desse client. Uma identidade por pessoa (SSO entre produtos). Hoje so o Doctor-Hub consome; Teleconsulta/Telediagnostico entram via migracao/federacao futura (decisao a parte, com os donos).",
   "clients": [
     {
       "clientId": "doctor-hub-web",

@@ -1,7 +1,7 @@
 # portal-identity — instruções para a IA
 
 > Repo de **infra de identidade** (Keycloak) da Portal Telemedicina. A **constituição da empresa**
-> está em [`../portal-platform/CLAUDE.md`](../portal-platform/CLAUDE.md) — **leia-a antes de qualquer
+> está em [`../../CLAUDE.md`](../../CLAUDE.md) — **leia-a antes de qualquer
 > ação**. Aqui ficam só os recortes deste repo. Decisão de plataforma: **P-003**.
 
 ## Diretriz Suprema (herdada)
@@ -26,5 +26,5 @@ disso se inventa**. Sem decisão registrada (P-xxx ou ADR aqui), não existe.
   Keycloak? **Exporte de volta** pro JSON — o `start-dev --import-realm` re-importa a cada boot e
   descarta o que não estiver no arquivo.
 - **Lotes pequenos.** Toda decisão de identidade confirmada → registrar em `docs/decisions/` (ADR
-  local) e, se transversal, também em `../portal-platform/docs/decisions/platform-decisions.md`.
+  local) e, se transversal, também em `../../docs/decisions/platform-decisions.md`.
 - **Dev efêmero, prod persistente:** `start-dev`+H2 só local; prod terá DB próprio + modo `start`.
