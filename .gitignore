@@ -7,3 +7,6 @@
 
 # credenciais locais de teste (dev-only) — nunca versionar
 CREDENCIAIS-DEV.txt
+
+# scripts locais com PII real (admin) — nunca versionar
+scripts/*.local.sh
