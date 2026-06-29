@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" width="200" height="56" fill="none" font-family="'Segoe UI', Roboto, system-ui, Arial, sans-serif">
+  <rect x="1.4" y="2.4" width="51.2" height="51.2" rx="14" fill="#FFFFFF" stroke="#054671" stroke-width="2.2"/>
+  <g fill="#054671" transform="translate(0,1) scale(0.84)">
+    <rect x="26" y="12" width="12" height="40" rx="6"/>
+    <rect x="12" y="26" width="40" height="12" rx="6"/>
+  </g>
+  <circle cx="27.4" cy="29" r="5.9" fill="#B85410"/>
+  <text x="66" y="36" font-size="24" font-weight="700" fill="#054671">Doctor <tspan fill="#B85410">Hub</tspan></text>
+</svg>

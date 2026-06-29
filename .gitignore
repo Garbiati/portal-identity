@@ -4,3 +4,6 @@
 # build / runtime
 *.log
 .run/
+
+# credenciais locais de teste (dev-only) — nunca versionar
+CREDENCIAIS-DEV.txt

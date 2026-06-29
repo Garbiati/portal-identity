@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" fill="none" font-family="'Segoe UI', Roboto, system-ui, Arial, sans-serif">
+  <!-- Logo: chip branco · cruz navy · nó laranja (BrandMark, D-074) -->
+  <g transform="translate(0,2)">
+    <rect x="1.4" y="1.4" width="53.2" height="53.2" rx="14" fill="#FFFFFF" stroke="#054671" stroke-width="2.2"/>
+    <g fill="#054671" transform="translate(0,0) scale(0.875)">
+      <rect x="26" y="12" width="12" height="40" rx="6"/>
+      <rect x="12" y="26" width="40" height="12" rx="6"/>
+    </g>
+    <circle cx="28" cy="28" r="6.1" fill="#B85410"/>
+  </g>
+  <text x="68" y="38" font-size="26" font-weight="700" fill="#FFFFFF">Doctor <tspan fill="#F07A1E">Hub</tspan></text>
+
+  <!-- Headline -->
+  <text x="0" y="120" font-size="33" font-weight="700" fill="#FFFFFF">Planejamento de</text>
+  <text x="0" y="160" font-size="33" font-weight="700" fill="#FFFFFF">capacidade médica</text>
+
+  <!-- Lead -->
+  <text x="0" y="208" font-size="15.5" fill="#FFFFFF" fill-opacity="0.82">Escale médicos, atenda à demanda dos governos</text>
+  <text x="0" y="231" font-size="15.5" fill="#FFFFFF" fill-opacity="0.82">e alimente a Teleconsulta com agendamentos</text>
+  <text x="0" y="254" font-size="15.5" fill="#FFFFFF" fill-opacity="0.82">prontos — tudo numa só plataforma.</text>
+</svg>

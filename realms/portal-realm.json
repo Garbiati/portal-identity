@@ -266,5 +266,11 @@
       ]
     }
   ],
-  "browserFlow": "browser-cpf-tel"
+  "browserFlow": "browser-cpf-tel",
+  "loginTheme": "portal",
+  "internationalizationEnabled": true,
+  "defaultLocale": "pt-BR",
+  "supportedLocales": [
+    "pt-BR"
+  ]
 }

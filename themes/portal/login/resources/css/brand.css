@@ -1,0 +1,175 @@
+/* Tema de login Doctor-Hub / Portal Telemedicina (D-074).
+   Fundo navy de marca com a arte à esquerda + cartão branco do formulário à direita.
+   `!important` em vários pontos porque o CSS do tema base também carrega. */
+
+:root {
+  --navy-900: #043452;
+  --navy: #054671;
+  --navy-700: #0A5A8C;
+  --blue: #0073BD;
+  --blue-700: #005A94;
+  --orange: #B85410;
+  --orange-bright: #F07A1E;
+  --text: #1B2733;
+  --text-soft: #51606E;
+  --border: #D5DEE6;
+  --bg-soft: #F4F7FA;
+}
+
+* { box-sizing: border-box; }
+
+/* Fundo: gradiente navy na página toda (mata o polígono escuro do tema base). */
+html, body,
+body.login-pf, .login-pf body, #kc-container, .login-pf-page {
+  background: linear-gradient(150deg, var(--navy-700) 0%, var(--navy) 52%, var(--navy-900) 100%) !important;
+  background-attachment: fixed !important;
+  margin: 0 !important;
+  color: var(--text);
+  font-family: 'Segoe UI', Roboto, system-ui, -apple-system, Arial, sans-serif;
+}
+
+/* esconde o cabeçalho com o nome do realm — a marca está na arte */
+#kc-header, .login-pf-page-header { display: none !important; }
+
+/* Arte da marca (logo + Doctor Hub + headline + lead) — fixa à esquerda. */
+body::before {
+  content: "";
+  position: fixed;
+  left: 7%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(460px, 40vw);
+  aspect-ratio: 480 / 300;
+  background: url("../img/brand.svg") no-repeat center / contain;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layout: empurra o cartão para a direita, centralizado verticalmente. */
+.login-pf-page {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: flex-end !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 24px clamp(24px, 7vw, 110px) !important;
+}
+
+/* Cartão branco do formulário (direita). */
+.card-pf {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 92vw) !important;
+  margin: 0 !important;
+  padding: 40px 36px !important;
+  background: #fff !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  box-shadow: 0 24px 60px rgba(4, 28, 48, .38) !important;
+}
+
+/* logo no topo do cartão — só no mobile (no desktop a marca está na arte à esquerda) */
+.card-pf::before {
+  content: "";
+  display: none;
+  height: 44px;
+  margin: 0 0 20px;
+  background: url("../img/logo.svg") no-repeat left center / contain;
+}
+
+.login-pf-header { margin: 0 0 6px !important; }
+#kc-page-title {
+  margin: 0 !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  color: var(--navy) !important;
+  text-align: left !important;
+}
+.login-pf-header::after {
+  content: "Acesse com sua conta da Portal Telemedicina.";
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--text-soft);
+}
+
+/* ── Formulário ───────────────────────────────────────────────────────────── */
+#kc-content, #kc-content-wrapper { width: 100% !important; }
+#kc-form-login { display: flex; flex-direction: column; gap: 16px; margin-top: 22px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin: 0 !important; }
+
+label, .control-label, .pf-c-form__label, .pf-v5-c-form__label, #kc-form-login label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--text) !important;
+}
+
+input[type="text"], input[type="email"], input[type="password"],
+.form-control, .pf-c-form-control, .pf-v5-c-form-control {
+  width: 100% !important;
+  height: 44px !important;
+  padding: 0 12px !important;
+  font-size: 15px !important;
+  color: var(--text) !important;
+  background: #fff !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+input:focus, .form-control:focus, .pf-c-form-control:focus, .pf-v5-c-form-control:focus {
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px rgba(0,115,189,.18) !important;
+}
+
+/* botão entrar */
+input[type="submit"], button[type="submit"], #kc-login,
+.btn-primary, .pf-c-button.pf-m-primary, .pf-v5-c-button.pf-m-primary {
+  width: 100% !important;
+  height: 46px !important;
+  margin-top: 6px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  background: var(--blue) !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  cursor: pointer;
+}
+#kc-login:hover, .btn-primary:hover, .pf-c-button.pf-m-primary:hover { background: var(--blue-700) !important; }
+
+/* links */
+#kc-content a, .login-pf-page a { color: var(--blue) !important; text-decoration: none; font-weight: 500; }
+#kc-content a:hover { text-decoration: underline; }
+
+#kc-form-options { margin: -4px 0 0; font-size: 13px; }
+
+/* botão "olho" de senha */
+.pf-c-button.pf-m-control, .pf-v5-c-button.pf-m-control, button.pf-c-button[aria-label] {
+  height: 44px !important;
+  border: 1px solid var(--border) !important;
+  border-left: 0 !important;
+  border-radius: 0 10px 10px 0 !important;
+  background: var(--bg-soft) !important;
+  color: var(--text-soft) !important;
+}
+
+/* alertas/erros */
+.alert, .pf-c-alert, .pf-v5-c-alert, .kc-feedback-text, #kc-content .alert-error {
+  margin: 0 0 14px !important;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  background: #FCE9E9 !important;
+  color: #8A1C1C !important;
+  border: 1px solid #F2C4C4 !important;
+}
+
+/* ── Mobile: arte some, cartão centralizado, logo no topo do cartão ───────── */
+@media (max-width: 860px) {
+  body::before { display: none; }
+  .login-pf-page { align-items: center !important; padding: 24px 16px !important; }
+  .card-pf::before { display: block; }
+}
