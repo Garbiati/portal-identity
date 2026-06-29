@@ -17,3 +17,6 @@ services:
       KC_HEALTH_ENABLED: "true"
     volumes:
       - ./realms:/opt/keycloak/data/import:ro
+      # Provider customizado: login por CPF/telefone (build em providers/login-cpf-telefone — `make build-provider`).
+      # start-dev detecta o JAR e roda o build automaticamente no boot.
+      - ./providers/login-cpf-telefone/target/login-cpf-telefone.jar:/opt/keycloak/providers/login-cpf-telefone.jar:ro

@@ -18,8 +18,13 @@
       "directAccessGrantsEnabled": false,
       "rootUrl": "http://localhost:5174",
       "baseUrl": "/",
-      "redirectUris": ["http://localhost:5174/*"],
-      "webOrigins": ["http://localhost:5174", "+"],
+      "redirectUris": [
+        "http://localhost:5174/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5174",
+        "+"
+      ],
       "attributes": {
         "pkce.code.challenge.method": "S256",
         "post.logout.redirect.uris": "http://localhost:5174/*"
@@ -51,10 +56,22 @@
   "roles": {
     "client": {
       "doctor-hub-api": [
-        { "name": "admin",     "description": "Administrador do Doctor-Hub (gestao de usuarios/config)" },
-        { "name": "demandas",  "description": "Demandas Medicas (cockpit de capacidade)" },
-        { "name": "regulacao", "description": "Regulacao (cliente; da o de acordo / solicita)" },
-        { "name": "gestor",    "description": "Gestor (unidade; assume slots e agenda)" }
+        {
+          "name": "admin",
+          "description": "Administrador do Doctor-Hub (gestao de usuarios/config)"
+        },
+        {
+          "name": "demandas",
+          "description": "Demandas Medicas (cockpit de capacidade)"
+        },
+        {
+          "name": "regulacao",
+          "description": "Regulacao (cliente; da o de acordo / solicita)"
+        },
+        {
+          "name": "gestor",
+          "description": "Gestor (unidade; assume slots e agenda)"
+        }
       ]
     }
   },
@@ -66,8 +83,26 @@
       "firstName": "Mariana",
       "lastName": "Rabelo",
       "email": "mariana@doctorhub.local",
-      "credentials": [{ "type": "password", "value": "102030@302010", "temporary": false }],
-      "clientRoles": { "doctor-hub-api": ["demandas"] }
+      "credentials": [
+        {
+          "type": "password",
+          "value": "102030@302010",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "doctor-hub-api": [
+          "demandas"
+        ]
+      },
+      "attributes": {
+        "cpf": [
+          "04487621930"
+        ],
+        "telefone": [
+          "86988880001"
+        ]
+      }
     },
     {
       "username": "aldair",
@@ -76,8 +111,26 @@
       "firstName": "Aldair",
       "lastName": "Moura",
       "email": "aldair@doctorhub.local",
-      "credentials": [{ "type": "password", "value": "102030@302010", "temporary": false }],
-      "clientRoles": { "doctor-hub-api": ["regulacao"] }
+      "credentials": [
+        {
+          "type": "password",
+          "value": "102030@302010",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "doctor-hub-api": [
+          "regulacao"
+        ]
+      },
+      "attributes": {
+        "cpf": [
+          "23349066105"
+        ],
+        "telefone": [
+          "86988880002"
+        ]
+      }
     },
     {
       "username": "eronildes",
@@ -86,8 +139,26 @@
       "firstName": "Eronildes",
       "lastName": "Bastos",
       "email": "eronildes@doctorhub.local",
-      "credentials": [{ "type": "password", "value": "102030@302010", "temporary": false }],
-      "clientRoles": { "doctor-hub-api": ["gestor"] }
+      "credentials": [
+        {
+          "type": "password",
+          "value": "102030@302010",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "doctor-hub-api": [
+          "gestor"
+        ]
+      },
+      "attributes": {
+        "cpf": [
+          "82564017306"
+        ],
+        "telefone": [
+          "86988880003"
+        ]
+      }
     },
     {
       "username": "admin-dh",
@@ -96,8 +167,92 @@
       "firstName": "Admin",
       "lastName": "Doctor-Hub",
       "email": "admin@doctorhub.local",
-      "credentials": [{ "type": "password", "value": "102030@302010", "temporary": false }],
-      "clientRoles": { "doctor-hub-api": ["admin"] }
+      "credentials": [
+        {
+          "type": "password",
+          "value": "102030@302010",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "doctor-hub-api": [
+          "admin"
+        ]
+      },
+      "attributes": {
+        "cpf": [
+          "31822490511"
+        ],
+        "telefone": [
+          "86988880004"
+        ]
+      }
     }
-  ]
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\": [{\"name\": \"username\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"email\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"cpf\", \"displayName\": \"CPF\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"telefone\", \"displayName\": \"Telefone\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}, \"multivalued\": false}]}"
+          ]
+        }
+      }
+    ]
+  },
+  "authenticationFlows": [
+    {
+      "alias": "browser-cpf-tel",
+      "description": "Browser com login por CPF/telefone",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "authenticator": "auth-cookie"
+        },
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "authenticator": "identity-provider-redirector"
+        },
+        {
+          "authenticatorFlow": true,
+          "autheticatorFlow": true,
+          "requirement": "ALTERNATIVE",
+          "priority": 30,
+          "userSetupAllowed": false,
+          "flowAlias": "forms-cpf-tel"
+        }
+      ]
+    },
+    {
+      "alias": "forms-cpf-tel",
+      "description": "username(CPF/telefone) + senha",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "authenticator": "auth-username-password-cpf-telefone"
+        }
+      ]
+    }
+  ],
+  "browserFlow": "browser-cpf-tel"
 }

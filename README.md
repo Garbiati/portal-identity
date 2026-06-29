@@ -26,7 +26,8 @@ isolada. Por isso vive em repo separado, registrado no manifest `repos.yml` do `
 ## Rodar (dev)
 ```bash
 cp .env.example .env       # ajuste se quiser
-make up                    # sobe Keycloak + importa o realm 'portal'
+make build-provider        # builda o provider de login CPF/telefone (JAR via container Maven)
+make up                    # builda o provider + sobe Keycloak + importa o realm 'portal'
 make status                # estado
 ```
 - Console admin: http://localhost:8089/admin (usuário `admin`, senha do `.env`).
@@ -35,13 +36,18 @@ make status                # estado
 - **DEV é efêmero** (`start-dev`, H2 em memória): a fonte da verdade é `realms/portal-realm.json`,
   re-importado a cada boot. Mudou no console? **Exporte de volta pro JSON** ou se perde no próximo `up`.
 
+### Login por username, email, CPF **ou** telefone (I-002)
+O provider `providers/login-cpf-telefone` (authenticator customizado) deixa o usuário entrar com
+**username, email, CPF ou telefone** + senha. CPF/telefone são comparados **só por dígitos** (aceita
+formatado: `233.490.661-05` = `23349066105`). Os atributos ficam **normalizados** nos usuários.
+
 ### Usuários-semente (DEV-only, senha `102030@302010`)
-| usuário | papel (client role em doctor-hub-api) |
-|---|---|
-| `mariana` | demandas |
-| `aldair` | regulacao |
-| `eronildes` | gestor |
-| `admin-dh` | admin |
+| usuário | papel | CPF (login) | telefone (login) |
+|---|---|---|---|
+| `mariana` | demandas | 044.876.219-30 | 86 98888-0001 |
+| `aldair` | regulacao | 233.490.661-05 | 86 98888-0002 |
+| `eronildes` | gestor | 825.640.173-06 | 86 98888-0003 |
+| `admin-dh` | admin | 318.224.905-11 | 86 98888-0004 |
 
 ## Estrutura
 ```
