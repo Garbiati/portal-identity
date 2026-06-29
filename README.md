@@ -35,7 +35,7 @@ make status                # estado
 - **DEV é efêmero** (`start-dev`, H2 em memória): a fonte da verdade é `realms/portal-realm.json`,
   re-importado a cada boot. Mudou no console? **Exporte de volta pro JSON** ou se perde no próximo `up`.
 
-### Usuários-semente (DEV-only, senha `Dev@12345`)
+### Usuários-semente (DEV-only, senha `102030@302010`)
 | usuário | papel (client role em doctor-hub-api) |
 |---|---|
 | `mariana` | demandas |
