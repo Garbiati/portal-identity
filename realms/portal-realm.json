@@ -216,8 +216,8 @@
   },
   "authenticationFlows": [
     {
-      "alias": "browser-cpf-tel",
-      "description": "Browser com login por CPF/telefone",
+      "alias": "browser-otp",
+      "description": "Browser: identificador (CPF/telefone) -> senha OU codigo de uso unico (SPEC-OTP-DEV)",
       "providerId": "basic-flow",
       "topLevel": true,
       "builtIn": false,
@@ -244,13 +244,13 @@
           "requirement": "ALTERNATIVE",
           "priority": 30,
           "userSetupAllowed": false,
-          "flowAlias": "forms-cpf-tel"
+          "flowAlias": "forms-otp"
         }
       ]
     },
     {
-      "alias": "forms-cpf-tel",
-      "description": "username(CPF/telefone) + senha",
+      "alias": "forms-otp",
+      "description": "1) identificador (username/email/CPF/telefone)  2) credencial",
       "providerId": "basic-flow",
       "topLevel": false,
       "builtIn": false,
@@ -261,12 +261,53 @@
           "requirement": "REQUIRED",
           "priority": 10,
           "userSetupAllowed": false,
-          "authenticator": "auth-username-password-cpf-telefone"
+          "authenticator": "auth-username-form-cpf-telefone"
+        },
+        {
+          "authenticatorFlow": true,
+          "autheticatorFlow": true,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "flowAlias": "credenciais-otp"
+        }
+      ]
+    },
+    {
+      "alias": "credenciais-otp",
+      "description": "senha OU codigo por e-mail OU codigo por SMS (alternativas; 'tentar outra forma')",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "authenticator": "auth-password-form"
+        },
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "authenticator": "auth-otp-email-dev"
+        },
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 30,
+          "userSetupAllowed": false,
+          "authenticator": "auth-otp-sms-dev"
         }
       ]
     }
   ],
-  "browserFlow": "browser-cpf-tel",
+  "browserFlow": "browser-otp",
   "loginTheme": "portal",
   "internationalizationEnabled": true,
   "defaultLocale": "pt-BR",

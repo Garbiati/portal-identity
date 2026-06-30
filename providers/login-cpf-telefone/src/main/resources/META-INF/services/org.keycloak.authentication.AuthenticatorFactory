@@ -1,1 +1,3 @@
-com.portaltelemedicina.identity.CpfTelefoneUsernameFormFactory
+com.portaltelemedicina.identity.UsernameFormCpfTelefoneFactory
+com.portaltelemedicina.identity.EmailCodeAuthenticatorFactory
+com.portaltelemedicina.identity.SmsCodeAuthenticatorFactory

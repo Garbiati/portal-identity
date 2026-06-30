@@ -8,8 +8,8 @@
   <artifactId>login-cpf-telefone</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-  <name>portal-identity :: login por CPF/telefone</name>
-  <description>Authenticator do Keycloak: resolve o usuário por CPF ou telefone (além de username/email).</description>
+  <name>portal-identity :: authenticators de login</name>
+  <description>Authenticators do Keycloak: login por CPF/telefone (I-002) e por código de uso único / OTP em modo DEV (SPEC-OTP-DEV).</description>
 
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
