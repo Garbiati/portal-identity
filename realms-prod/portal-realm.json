@@ -1,0 +1,227 @@
+{
+  "realm": "portal",
+  "displayName": "Portal Telemedicina",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "smtpServer": {
+    "host": "${SMTP_HOST}",
+    "port": "${SMTP_PORT}",
+    "from": "${SMTP_FROM}",
+    "fromDisplayName": "${SMTP_FROM_DISPLAY}",
+    "auth": "${SMTP_AUTH}",
+    "user": "${SMTP_USER}",
+    "password": "${SMTP_PASSWORD}",
+    "starttls": "${SMTP_STARTTLS}",
+    "ssl": "${SMTP_SSL}"
+  },
+  "clients": [
+    {
+      "clientId": "doctor-hub-web",
+      "name": "Doctor-Hub Web (PWA)",
+      "description": "Client publico de LOGIN do Doctor-Hub (SPA). OIDC Authorization Code + PKCE.",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "rootUrl": "${FRONT_BASE_URL}",
+      "baseUrl": "/",
+      "redirectUris": [
+        "${FRONT_BASE_URL}/*"
+      ],
+      "webOrigins": [
+        "${FRONT_BASE_URL}"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "${FRONT_BASE_URL}/*"
+      },
+      "protocolMappers": [
+        {
+          "name": "doctor-hub-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "doctor-hub-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "doctor-hub-api",
+      "name": "Doctor-Hub API (resource server)",
+      "description": "Client RESOURCE do Doctor-Hub. Define os papeis do produto como CLIENT ROLES; a API valida o JWT por esta audiencia.",
+      "enabled": true,
+      "bearerOnly": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    },
+    {
+      "clientId": "doctor-hub-admin",
+      "name": "Doctor-Hub Admin (service account p/ gestao de usuarios)",
+      "description": "Client confidencial usado SO pela doctor-hub-api (client_credentials) para administrar usuarios no Keycloak. Permissoes minimas de realm-management (D-143).",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "secret": "${ADMIN_CLIENT_SECRET}"
+    }
+  ],
+  "roles": {
+    "client": {
+      "doctor-hub-api": [
+        {
+          "name": "admin",
+          "description": "Administrador do Doctor-Hub (gestao de usuarios/config)"
+        },
+        {
+          "name": "demandas",
+          "description": "Demandas Medicas (cockpit de capacidade)"
+        },
+        {
+          "name": "regulacao",
+          "description": "Regulacao (cliente; da o de acordo / solicita)"
+        },
+        {
+          "name": "gestor",
+          "description": "Gestor (unidade; assume slots e agenda)"
+        }
+      ]
+    }
+  },
+  "users": [
+    {
+      "username": "service-account-doctor-hub-admin",
+      "enabled": true,
+      "serviceAccountClientId": "doctor-hub-admin",
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "view-users",
+          "query-users",
+          "view-clients"
+        ]
+      }
+    }
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\": [{\"name\": \"username\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"email\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"firstName\", \"displayName\": \"${firstName}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"lastName\", \"displayName\": \"${lastName}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}}, {\"name\": \"cpf\", \"displayName\": \"CPF\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"telefone\", \"displayName\": \"Telefone\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}, \"multivalued\": false}]}"
+          ]
+        }
+      }
+    ]
+  },
+  "authenticationFlows": [
+    {
+      "alias": "browser-otp",
+      "description": "Browser: identificador (CPF/telefone) -> senha OU codigo de uso unico (SPEC-OTP-DEV)",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "authenticator": "auth-cookie"
+        },
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "authenticator": "identity-provider-redirector"
+        },
+        {
+          "authenticatorFlow": true,
+          "autheticatorFlow": true,
+          "requirement": "ALTERNATIVE",
+          "priority": 30,
+          "userSetupAllowed": false,
+          "flowAlias": "forms-otp"
+        }
+      ]
+    },
+    {
+      "alias": "forms-otp",
+      "description": "1) identificador (username/email/CPF/telefone)  2) credencial",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "authenticator": "auth-username-form-cpf-telefone"
+        },
+        {
+          "authenticatorFlow": true,
+          "autheticatorFlow": true,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "flowAlias": "credenciais-otp"
+        }
+      ]
+    },
+    {
+      "alias": "credenciais-otp",
+      "description": "senha OU codigo por e-mail OU codigo por SMS (alternativas; 'tentar outra forma')",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "authenticator": "auth-password-form"
+        },
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "authenticator": "auth-otp-email-dev"
+        },
+        {
+          "authenticatorFlow": false,
+          "autheticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 30,
+          "userSetupAllowed": false,
+          "authenticator": "auth-otp-sms-dev"
+        }
+      ]
+    }
+  ],
+  "browserFlow": "browser-otp",
+  "loginTheme": "portal",
+  "internationalizationEnabled": true,
+  "defaultLocale": "pt-BR",
+  "supportedLocales": [
+    "pt-BR"
+  ]
+}
