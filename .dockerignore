@@ -1,0 +1,12 @@
+# Mantém o contexto de build enxuto e fora segredos/artefatos.
+**/target
+**/.git
+.env
+*.local.sh
+CREDENCIAIS-DEV.txt
+docs/
+specs/
+scripts/
+README.md
+Makefile
+docker-compose.yml
