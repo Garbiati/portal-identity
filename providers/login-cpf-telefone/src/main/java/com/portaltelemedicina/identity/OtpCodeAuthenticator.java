@@ -8,6 +8,7 @@ import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.common.util.Time;
+import org.keycloak.email.EmailSenderProvider;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
@@ -15,16 +16,20 @@ import org.keycloak.models.utils.FormMessage;
 import org.keycloak.sessions.AuthenticationSessionModel;
 
 /**
- * Login por <b>código de uso único</b> (OTP) — <b>modo DEV</b> (SPEC-OTP-DEV).
+ * Login por <b>código de uso único</b> (OTP). Fator <b>alternativo</b> à senha (passwordless opcional),
+ * não 2º fator (SPEC-OTP-DEV / I-003). O usuário já foi resolvido na 1ª etapa
+ * ({@link UsernameFormCpfTelefone}); aqui geramos um código de {@value #CODE_LENGTH} dígitos, válido
+ * por {@value #TTL_SECONDS}s, com até {@value #MAX_ATTEMPTS} tentativas, e o <b>enviamos de verdade</b>
+ * pelo canal da fábrica:
+ * <ul>
+ *   <li><b>E-mail</b>: via SMTP do realm (config em {@code smtpServer}, lida do {@code .env}).</li>
+ *   <li><b>SMS</b>: via Twilio (credenciais em {@code TWILIO_*} no ambiente).</li>
+ * </ul>
  *
- * <p>É um fator <b>alternativo</b> à senha (login passwordless opcional), não um 2º fator. O usuário
- * já foi resolvido na 1ª etapa ({@link UsernameFormCpfTelefone}); aqui geramos um código numérico de
- * {@value #CODE_LENGTH} dígitos, válido por {@value #TTL_SECONDS}s, com até {@value #MAX_ATTEMPTS}
- * tentativas. O canal (e-mail ou SMS) é fixado pela fábrica que instancia este authenticator, então
- * cada canal aparece como uma opção própria no "tentar outra forma".</p>
- *
- * <p><b>DEV:</b> o código é apenas <b>escrito no log</b> — não há envio real (SMTP/SMS fica para uma
- * entrega futura). Nunca expomos o código em resposta HTTP.</p>
+ * <p>Cada canal só aparece se o usuário tem o destino <b>e</b> o transporte está configurado
+ * ({@link #configuredFor}). Em DEV, com {@code OTP_DEV_LOG_CODE=true}, o código também vai para o log
+ * (destino mascarado, LGPD) para conferência — em prod fica {@code false}. O código nunca aparece em
+ * resposta HTTP.</p>
  */
 public class OtpCodeAuthenticator implements Authenticator {
 
@@ -58,8 +63,8 @@ public class OtpCodeAuthenticator implements Authenticator {
             context.attempted();
             return;
         }
-        gerarEEnviar(context, destino);
-        context.challenge(montarForm(context, null));
+        boolean enviado = gerarEEnviar(context, destino);
+        context.challenge(montarForm(context, enviado ? null : new FormMessage(FIELD_OTP, "otpCodeSendError")));
     }
 
     @Override
@@ -68,9 +73,8 @@ public class OtpCodeAuthenticator implements Authenticator {
 
         // Reenvio: gera um código novo e mostra o form de novo.
         if (form.containsKey(FIELD_RESEND)) {
-            String destino = channel.destino(context.getUser());
-            gerarEEnviar(context, destino);
-            context.challenge(montarForm(context, null));
+            boolean enviado = gerarEEnviar(context, channel.destino(context.getUser()));
+            context.challenge(montarForm(context, enviado ? null : new FormMessage(FIELD_OTP, "otpCodeSendError")));
             return;
         }
 
@@ -105,8 +109,11 @@ public class OtpCodeAuthenticator implements Authenticator {
                 montarForm(context, new FormMessage(FIELD_OTP, "otpCodeInvalid")));
     }
 
-    /** Gera um código novo, zera as tentativas e "envia" (DEV: log). */
-    private void gerarEEnviar(AuthenticationFlowContext context, String destino) {
+    /**
+     * Gera um código novo, zera as tentativas e <b>envia de verdade</b> pelo canal.
+     * @return true se o envio foi bem-sucedido; false se falhou (caller mostra erro).
+     */
+    private boolean gerarEEnviar(AuthenticationFlowContext context, String destino) {
         String codigo = String.format("%0" + CODE_LENGTH + "d", RANDOM.nextInt(1_000_000));
         AuthenticationSessionModel authSession = context.getAuthenticationSession();
         authSession.setAuthNote(NOTE_CODE, codigo);
@@ -114,9 +121,20 @@ public class OtpCodeAuthenticator implements Authenticator {
         authSession.setAuthNote(NOTE_ATTEMPTS, "0");
 
         UserModel user = context.getUser();
-        // DEV: sem envio real. O código vai SÓ para o log do servidor (nunca para a resposta HTTP).
-        LOG.infof("[OTP-DEV] codigo de login para '%s' via %s (%s): %s  (valido por %ds)",
-                user.getUsername(), channel.label, mascarar(destino), codigo, TTL_SECONDS);
+        // DEV: log opcional do código (mascarando o destino, LGPD). Em prod OTP_DEV_LOG_CODE=false.
+        if (devLogCode()) {
+            LOG.infof("[OTP-DEV] codigo de login para '%s' via %s (%s): %s  (valido por %ds)",
+                    user.getUsername(), channel.label, mascarar(destino), codigo, TTL_SECONDS);
+        }
+
+        try {
+            channel.enviar(context.getSession(), context.getRealm(), user, codigo);
+            return true;
+        } catch (Exception e) {
+            LOG.errorf(e, "[OTP] falha ao enviar codigo via %s para '%s' (%s)",
+                    channel.label, user.getUsername(), mascarar(destino));
+            return false;
+        }
     }
 
     private Response montarForm(AuthenticationFlowContext context, FormMessage erro) {
@@ -125,6 +143,10 @@ public class OtpCodeAuthenticator implements Authenticator {
             forms.addError(erro);
         }
         return forms.createForm(TEMPLATE);
+    }
+
+    private static boolean devLogCode() {
+        return "true".equalsIgnoreCase(System.getenv("OTP_DEV_LOG_CODE"));
     }
 
     private static int lerTentativas(AuthenticationSessionModel authSession) {
@@ -144,6 +166,9 @@ public class OtpCodeAuthenticator implements Authenticator {
 
     /** Mascara o destino no log para não jogar e-mail/telefone completos em texto puro (LGPD). */
     private static String mascarar(String destino) {
+        if (destino == null) {
+            return "?";
+        }
         if (destino.contains("@")) {
             int at = destino.indexOf('@');
             String nome = destino.substring(0, at);
@@ -160,7 +185,10 @@ public class OtpCodeAuthenticator implements Authenticator {
 
     @Override
     public boolean configuredFor(KeycloakSession session, RealmModel realm, UserModel user) {
-        // Só aparece como opção se o usuário tem o canal cadastrado.
+        // Oferece o canal a quem tem o contato (e-mail/telefone). A disponibilidade do TRANSPORTE
+        // (SMTP/Twilio) NÃO entra aqui de propósito: o Keycloak lista os alternativos no "tentar outra
+        // forma" mesmo com configuredFor=false e, ao selecionar, mostraria um erro genérico feio. Então
+        // deixamos selecionável e, se o envio falhar (transporte ausente/fora), mostramos um erro amigável.
         String destino = channel.destino(user);
         return destino != null && !destino.isBlank();
     }
@@ -174,18 +202,36 @@ public class OtpCodeAuthenticator implements Authenticator {
     public void close() {
     }
 
-    /** Canal de entrega do código. O destino sai dos dados do próprio usuário. */
+    /** Canal de entrega do código. Destino sai dos dados do usuário; envio é real (SMTP/Twilio). */
     public enum Channel {
         EMAIL("e-mail") {
             @Override
             String destino(UserModel user) {
                 return user.getEmail();
             }
+
+            @Override
+            void enviar(KeycloakSession session, RealmModel realm, UserModel user, String codigo) throws Exception {
+                String subject = "Código de acesso — Portal Telemedicina";
+                String texto = "Olá!\n\nSeu código de acesso é: " + codigo
+                        + "\n\nEle vale por 5 minutos. Se você não tentou entrar, ignore este e-mail.";
+                String html = "<p>Olá!</p><p>Seu código de acesso é:</p>"
+                        + "<p style=\"font-size:24px;font-weight:bold;letter-spacing:3px\">" + codigo + "</p>"
+                        + "<p>Ele vale por 5 minutos. Se você não tentou entrar, ignore este e-mail.</p>";
+                session.getProvider(EmailSenderProvider.class)
+                        .send(realm.getSmtpConfig(), user, subject, texto, html);
+            }
         },
         SMS("SMS") {
             @Override
             String destino(UserModel user) {
                 return user.getFirstAttribute(IdentidadeResolver.ATTR_TELEFONE);
+            }
+
+            @Override
+            void enviar(KeycloakSession session, RealmModel realm, UserModel user, String codigo) throws Exception {
+                TwilioSms.enviar(destino(user),
+                        "Portal Telemedicina: seu codigo de acesso e " + codigo + " (vale 5 min).");
             }
         };
 
@@ -196,5 +242,7 @@ public class OtpCodeAuthenticator implements Authenticator {
         }
 
         abstract String destino(UserModel user);
+
+        abstract void enviar(KeycloakSession session, RealmModel realm, UserModel user, String codigo) throws Exception;
     }
 }

@@ -15,6 +15,23 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:?defina KEYCLOAK_ADMIN no .env}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?defina KEYCLOAK_ADMIN_PASSWORD no .env}
       KC_HEALTH_ENABLED: "true"
+      # SMTP (envio real de e-mail: OTP + "Esqueceu a senha?"). Valores no .env (gitignored).
+      # O realm (smtpServer) lê estes via substituição ${...} no import. Vazio = e-mail desativado.
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_FROM_DISPLAY: ${SMTP_FROM_DISPLAY:-Portal Telemedicina}
+      SMTP_AUTH: ${SMTP_AUTH:-true}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-true}
+      SMTP_SSL: ${SMTP_SSL:-false}
+      # Twilio (envio real de SMS do código). Valores no .env (gitignored).
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_FROM: ${TWILIO_FROM:-}
+      # DEV: loga o código (mascarando destino) p/ conferência. Em prod deixe "false".
+      OTP_DEV_LOG_CODE: ${OTP_DEV_LOG_CODE:-true}
     volumes:
       - ./realms:/opt/keycloak/data/import:ro
       # Tema de login customizado (identidade Doctor-Hub). O realm aponta loginTheme=portal.

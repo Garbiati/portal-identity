@@ -89,8 +89,9 @@ Cenário: Tentativas esgotadas
 - [x] Código nunca aparece em resposta HTTP; só no log (DEV) e com destino mascarado (LGPD). Zero segredo no git.
 
 ## 6. Fora de escopo
-- **Envio real** por **SMTP** (e-mail) e por **gateway de SMS pago** (Twilio/Zenvia) — entrega futura.
-- **"Esqueceu a senha?"** com envio real (depende do SMTP) — futura.
+- ✅ ~~**Envio real** por **SMTP** (e-mail) e por **gateway de SMS** (Twilio)~~ — **FEITO (I-005)**: e-mail
+  via `EmailSenderProvider`/SMTP do realm; SMS via Twilio REST. Segredos no `.env`/Secret Manager.
+- ✅ ~~**"Esqueceu a senha?"** com envio real~~ — **destravado** pelo SMTP (I-005).
 - **Rate-limit por destinatário** / antifraude de SMS — futura (em DEV não há custo de envio).
 - TOTP/authenticator-app e WebAuthn/passkey.
 
