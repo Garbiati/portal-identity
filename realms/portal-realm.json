@@ -62,6 +62,17 @@
       "publicClient": false,
       "standardFlowEnabled": false,
       "directAccessGrantsEnabled": false
+    },
+    {
+      "clientId": "doctor-hub-admin",
+      "name": "Doctor-Hub Admin (service account p/ gestao de usuarios)",
+      "description": "Client confidencial usado SO pela doctor-hub-api (client_credentials) para administrar usuarios no Keycloak. Permissoes minimas de realm-management (D-143).",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "secret": "${ADMIN_CLIENT_SECRET}"
     }
   ],
   "roles": {
@@ -210,6 +221,14 @@
       "realmRoles": [
         "default-roles-portal"
       ]
+    },
+    {
+      "username": "service-account-doctor-hub-admin",
+      "enabled": true,
+      "serviceAccountClientId": "doctor-hub-admin",
+      "clientRoles": {
+        "realm-management": ["manage-users", "view-users", "query-users", "view-clients"]
+      }
     }
   ],
   "components": {

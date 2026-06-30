@@ -15,6 +15,8 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:?defina KEYCLOAK_ADMIN no .env}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?defina KEYCLOAK_ADMIN_PASSWORD no .env}
       KC_HEALTH_ENABLED: "true"
+      # Secret do service account `doctor-hub-admin` (a doctor-hub-api usa p/ gerir usuários). DEV no .env.
+      ADMIN_CLIENT_SECRET: ${ADMIN_CLIENT_SECRET:?defina ADMIN_CLIENT_SECRET no .env}
       # SMTP (envio real de e-mail: OTP + "Esqueceu a senha?"). Valores no .env (gitignored).
       # O realm (smtpServer) lê estes via substituição ${...} no import. Vazio = e-mail desativado.
       SMTP_HOST: ${SMTP_HOST:-}
