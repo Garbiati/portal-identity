@@ -22,9 +22,8 @@ ENV KC_HEALTH_ENABLED=true
 COPY --from=providers /work/login-cpf-telefone/target/login-cpf-telefone.jar /opt/keycloak/providers/
 # Tema de login (identidade Doctor-Hub).
 COPY themes/ /opt/keycloak/themes/
-# Driver/SocketFactory do Cloud SQL (JDBC sem IP público). ⚠️ confirmar a versão no deploy.
-ADD https://repo1.maven.org/maven2/com/google/cloud/sql/postgres-socket-factory/1.21.0/postgres-socket-factory-1.21.0-jar-with-dependencies.jar \
-    /opt/keycloak/providers/postgres-socket-factory.jar
+# Banco: em prod o acesso ao Cloud SQL é via sidecar Cloud SQL Auth Proxy (localhost:5432) → driver
+# Postgres padrão do Keycloak. Sem SocketFactory/jar extra (ver infrastructure/terraform).
 
 RUN /opt/keycloak/bin/kc.sh build
 
