@@ -1,0 +1,47 @@
+name: deploy
+# CI/CD do IdP (Keycloak): build da imagem (providers + themes) → push → deploy no Cloud Run.
+# Só na main. Auth via Workload Identity Federation (sem chave). Paridade com doctor-hub-api/web.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  PROJECT_ID: portal-tecnologia-500920
+  REGION: southamerica-east1
+  SERVICE: portal-identity
+  IMAGE: southamerica-east1-docker.pkg.dev/portal-tecnologia-500920/portal-identity/keycloak
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/818137989564/locations/global/workloadIdentityPools/github-pool/providers/github
+          service_account: github-deployer@portal-tecnologia-500920.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Docker auth (Artifact Registry)
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev -q
+
+      - name: Build & push (Dockerfile faz mvn do provider + kc.sh build com os themes)
+        run: |
+          docker build -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" .
+          docker push "$IMAGE:${{ github.sha }}"
+          docker push "$IMAGE:latest"
+
+      - name: Deploy (atualiza só o container 'keycloak'; sidecar cloudsql-proxy é do Terraform)
+        run: |
+          gcloud run services update "$SERVICE" \
+            --region "$REGION" \
+            --container keycloak \
+            --image "$IMAGE:${{ github.sha }}"
