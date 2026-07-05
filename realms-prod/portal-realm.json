@@ -92,6 +92,10 @@
         {
           "name": "gestor",
           "description": "Gestor (unidade; assume slots e agenda)"
+        },
+        {
+          "name": "super-admin",
+          "description": "Super-admin do doc hub (dono do produto) — config de tenant/features (D-158). 1 no sistema; atribuído fora da UI."
         }
       ]
     }
