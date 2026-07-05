@@ -1,5 +1,7 @@
 /* Tema de login Doctor-Hub / Portal Telemedicina (D-074).
-   Fundo navy de marca com a arte à esquerda + cartão branco do formulário à direita.
+   DESKTOP: split intencional — painel-marca navy (esquerda, ~46vw) + coluna clara do formulário
+   (direita) com o cartão centralizado V+H (espelha o app: sidebar navy + conteúdo claro).
+   MOBILE: cartão único branco sobre o gradiente navy da marca (com o logo no topo do cartão).
    `!important` em vários pontos porque o CSS do tema base também carrega. */
 
 :root {
@@ -14,15 +16,16 @@
   --text-soft: #51606E;
   --border: #D5DEE6;
   --bg-soft: #F4F7FA;
+  --panel-w: 46vw;                 /* largura do painel-marca à esquerda (desktop) */
 }
 
 * { box-sizing: border-box; }
 
-/* Fundo: gradiente navy na página toda (mata o polígono escuro do tema base). */
+/* Fundo (desktop): superfície CLARA da coluna do formulário — o painel navy fica só à esquerda
+   (body::before). Mata o polígono escuro do tema base. No mobile volta a ser o gradiente navy. */
 html, body,
 body.login-pf, .login-pf body, #kc-container, .login-pf-page {
-  background: linear-gradient(150deg, var(--navy-700) 0%, var(--navy) 52%, var(--navy-900) 100%) !important;
-  background-attachment: fixed !important;
+  background: var(--bg-soft) !important;
   margin: 0 !important;
   color: var(--text);
   /* Mesma pilha de fonte do app (doctor-hub-web/tokens.css --font-family) p/ os dois lerem como
@@ -34,43 +37,52 @@ body.login-pf, .login-pf body, #kc-container, .login-pf-page {
 /* esconde o cabeçalho com o nome do realm — a marca está na arte */
 #kc-header, .login-pf-page-header { display: none !important; }
 
-/* Arte da marca (logo + Doctor Hub + headline + lead) — fixa à esquerda. */
+/* PAINEL-MARCA (esquerda): metade fixa navy que preenche a coluna inteira, com a arte da marca
+   (logo + headline + lead) centralizada e um brilho azul para dar profundidade/presença. A borda
+   direita ganha uma sombra suave, então o split lê como INTENCIONAL contra a coluna clara. */
 body::before {
   content: "";
   position: fixed;
-  left: 7%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: min(460px, 40vw);
-  aspect-ratio: 480 / 300;
-  background: url("../img/brand.svg") no-repeat center / contain;
+  left: 0;
+  top: 0;
+  width: var(--panel-w);
+  height: 100vh;
+  background-image:
+    url("../img/brand.svg"),
+    radial-gradient(58% 46% at 42% 40%, rgba(0,115,189,.38) 0%, rgba(0,115,189,0) 70%),
+    linear-gradient(155deg, var(--navy-700) 0%, var(--navy) 55%, var(--navy-900) 100%);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: min(440px, 66%) auto, 130% 130%, cover;
+  box-shadow: inset -1px 0 0 rgba(255,255,255,.06), 8px 0 28px rgba(4,28,48,.16);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Layout: empurra o cartão para a direita, centralizado verticalmente. */
+/* Layout desktop: reserva o painel à esquerda e CENTRALIZA o cartão (V+H) na coluna direita —
+   sem cartão colado na borda nem vazio escuro; o respiro fica equilibrado dos dois lados. */
 .login-pf-page {
   display: flex !important;
-  flex-direction: column;
+  align-items: center !important;
   justify-content: center !important;
-  align-items: flex-end !important;
   min-height: 100vh !important;
   width: 100% !important;
   max-width: none !important;
-  padding: 24px clamp(24px, 7vw, 110px) !important;
+  padding: 40px clamp(24px, 5vw, 72px) !important;
+  padding-left: var(--panel-w) !important;
 }
 
-/* Cartão branco do formulário (direita). */
+/* Cartão branco do formulário (coluna direita, clara → sombra suave + borda fina). */
 .card-pf {
   position: relative;
   z-index: 1;
-  width: min(420px, 92vw) !important;
+  width: min(400px, 100%) !important;
   margin: 0 !important;
   padding: 40px 36px !important;
   background: #fff !important;
-  border: 0 !important;
+  border: 1px solid var(--border) !important;
   border-radius: 18px !important;
-  box-shadow: 0 24px 60px rgba(4, 28, 48, .38) !important;
+  box-shadow: 0 12px 34px rgba(4,28,48,.10), 0 2px 8px rgba(4,28,48,.05) !important;
 }
 
 /* logo no topo do cartão — só no mobile (no desktop a marca está na arte à esquerda) */
@@ -371,10 +383,25 @@ input:focus-visible, .pf-c-button:focus-visible {
 .card-pf:has(#kc-reset-password-form)    .login-pf-header::after { content: "Recupere o acesso à sua conta."; }
 .card-pf:has(#kc-otp-login-form)         .login-pf-header::after { content: "Digite o código de uso único que enviamos."; }
 
-/* ── Mobile: arte some, cartão centralizado, logo no topo do cartão ───────── */
+/* ── Mobile: fundo volta ao gradiente navy da marca; painel lateral some; cartão único
+   centralizado com o logo no topo do cartão e sombra forte que destaca no escuro. ───────────── */
 @media (max-width: 860px) {
+  html, body,
+  body.login-pf, .login-pf body, #kc-container, .login-pf-page {
+    background: linear-gradient(150deg, var(--navy-700) 0%, var(--navy) 52%, var(--navy-900) 100%) !important;
+    background-attachment: fixed !important;
+  }
   body::before { display: none; }
-  .login-pf-page { align-items: center !important; padding: 24px 16px !important; }
+  .login-pf-page {
+    align-items: center !important;
+    padding: 24px 16px !important;
+    padding-left: 16px !important;
+  }
+  .card-pf {
+    width: min(420px, 92vw) !important;
+    border-color: transparent !important;
+    box-shadow: 0 20px 50px rgba(4,28,48,.34) !important;
+  }
   .card-pf::before { display: block; }
   /* tiles de método: largura total, respiro confortável no toque */
   .select-auth-box-parent { padding: 16px !important; min-height: 68px !important; }

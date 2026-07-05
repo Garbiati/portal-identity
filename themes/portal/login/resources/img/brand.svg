@@ -1,18 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" fill="none" font-family="'Segoe UI', Roboto, system-ui, Arial, sans-serif">
-  <!-- Logo: marca doc hub "Pulso Divisor" v9.4 (chip navy #021E30 · filete azul · ECG âmbar) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 350" width="480" height="350" fill="none" font-family="'Segoe UI', Roboto, system-ui, Arial, sans-serif">
+  <!-- Marca doc hub "Pulso Divisor" v9.4 (D-155): chip navy #021E30 · filete azul #0073BD · pulso de
+       ECG âmbar. Ampliada para dar presença no painel-marca. -->
   <g transform="translate(0,2)">
-    <rect x="1.4" y="1.4" width="53.2" height="53.2" rx="14" fill="#021E30" stroke="#0073BD" stroke-width="2"/>
-    <path d="M6 34 H16 L20 37 L25 27 L30 41 L34 30 L38 34 H58" fill="none" stroke="#E8763A" stroke-width="4"
-          stroke-linecap="round" stroke-linejoin="round" transform="translate(1.6,0.5) scale(0.83)"/>
+    <rect x="1.25" y="1.25" width="65.5" height="65.5" rx="18" fill="#021E30" stroke="#0073BD" stroke-width="2.5"/>
+    <path d="M8 40 H19 L23 43 L28 30 L33 47 L37 34 L41 40 H60" fill="none" stroke="#E8763A" stroke-width="5"
+          stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="68" y="38" font-size="26" font-weight="700" fill="#FFFFFF">doc <tspan fill="#F07A1E">hub</tspan></text>
+  <text x="84" y="46" font-size="32" font-weight="700" fill="#FFFFFF">doc <tspan fill="#F07A1E">hub</tspan></text>
 
-  <!-- Headline -->
-  <text x="0" y="120" font-size="33" font-weight="700" fill="#FFFFFF">Planejamento de</text>
-  <text x="0" y="160" font-size="33" font-weight="700" fill="#FFFFFF">capacidade médica</text>
+  <!-- "Pulso Divisor" como divisor: filete âmbar com uma batida de ECG (reforça a marca) -->
+  <path d="M0 92 H150 l8 -12 7 24 8 -12 H300" fill="none" stroke="#E8763A" stroke-width="2"
+        stroke-opacity="0.55" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Lead -->
-  <text x="0" y="208" font-size="15.5" fill="#FFFFFF" fill-opacity="0.82">Escale médicos, atenda à demanda dos governos</text>
-  <text x="0" y="231" font-size="15.5" fill="#FFFFFF" fill-opacity="0.82">e alimente a Teleconsulta com agendamentos</text>
-  <text x="0" y="254" font-size="15.5" fill="#FFFFFF" fill-opacity="0.82">prontos — tudo numa só plataforma.</text>
+  <!-- Headline — posicionamento atual: distribuição da capacidade médica (doc 28) -->
+  <text x="0" y="152" font-size="38" font-weight="800" fill="#FFFFFF">Capacidade médica</text>
+  <text x="0" y="194" font-size="38" font-weight="800" fill="#FFFFFF">no lugar certo,</text>
+  <text x="0" y="236" font-size="38" font-weight="800" fill="#FFFFFF">na hora certa.</text>
+
+  <!-- Lead — os 3 diferenciais (doc 28), sem inventar claim/número -->
+  <text x="0" y="284" font-size="16" fill="#FFFFFF" fill-opacity="0.82">Crie escalas com facilidade, veja a</text>
+  <text x="0" y="307" font-size="16" fill="#FFFFFF" fill-opacity="0.82">capacidade em tempo real e distribua</text>
+  <text x="0" y="330" font-size="16" fill="#FFFFFF" fill-opacity="0.82">os médicos conforme cada cliente.</text>
 </svg>
