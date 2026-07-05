@@ -219,6 +219,7 @@
   ],
   "browserFlow": "browser-otp",
   "loginTheme": "portal",
+  "emailTheme": "portal",
   "internationalizationEnabled": true,
   "defaultLocale": "pt-BR",
   "supportedLocales": [

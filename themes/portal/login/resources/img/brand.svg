@@ -8,7 +8,7 @@
     </g>
     <circle cx="28" cy="28" r="6.1" fill="#B85410"/>
   </g>
-  <text x="68" y="38" font-size="26" font-weight="700" fill="#FFFFFF">Doctor <tspan fill="#F07A1E">Hub</tspan></text>
+  <text x="68" y="38" font-size="26" font-weight="700" fill="#FFFFFF">doc <tspan fill="#F07A1E">hub</tspan></text>
 
   <!-- Headline -->
   <text x="0" y="120" font-size="33" font-weight="700" fill="#FFFFFF">Planejamento de</text>
