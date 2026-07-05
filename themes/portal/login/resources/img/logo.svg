@@ -1,9 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" width="200" height="56" fill="none" font-family="'Segoe UI', Roboto, system-ui, Arial, sans-serif">
-  <rect x="1.4" y="2.4" width="51.2" height="51.2" rx="14" fill="#FFFFFF" stroke="#054671" stroke-width="2.2"/>
-  <g fill="#054671" transform="translate(0,1) scale(0.84)">
-    <rect x="26" y="12" width="12" height="40" rx="6"/>
-    <rect x="12" y="26" width="40" height="12" rx="6"/>
-  </g>
-  <circle cx="27.4" cy="29" r="5.9" fill="#B85410"/>
-  <text x="66" y="36" font-size="24" font-weight="700" fill="#054671">Doctor <tspan fill="#B85410">Hub</tspan></text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196 56" width="196" height="56" fill="none" font-family="'Segoe UI', Roboto, system-ui, Arial, sans-serif">
+  <!-- Marca doc hub "Pulso Divisor" v9.4 (D-155, escolha do Alessandro 2026-07-04): chip navy #021E30,
+       filete azul #0073BD, pulso de ECG âmbar. Mesma arte do favicon/app. Wordmark p/ card branco. -->
+  <rect x="2" y="2" width="52" height="52" rx="14" fill="#021E30" stroke="#0073BD" stroke-width="2"/>
+  <path d="M6 34 H16 L20 37 L25 27 L30 41 L34 30 L38 34 H58" fill="none" stroke="#E8763A" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round" transform="translate(1.8,0.5) scale(0.8125)"/>
+  <text x="68" y="36" font-size="24" font-weight="700" fill="#054671">doc <tspan fill="#B85410">hub</tspan></text>
 </svg>
