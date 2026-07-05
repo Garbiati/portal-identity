@@ -170,9 +170,212 @@ input[type="submit"], button[type="submit"], #kc-login,
   border: 1px solid #F2C4C4 !important;
 }
 
+/* helper text (register/user-profile) e instruções — legível, AA sobre o card branco */
+.pf-c-form__helper-text, .pf-v5-c-form__helper-text,
+#kc-otp-instruction, #kc-info, #kc-info-wrapper, .instruction,
+#kc-registration-terms-text {
+  color: var(--text-soft) !important;   /* #51606E s/ #fff ≈ 6.5:1 (AA) */
+  font-size: 13px !important;
+  line-height: 1.45;
+}
+#kc-otp-instruction { margin: 0 0 14px !important; color: var(--text) !important; font-size: 14px !important; }
+#kc-info { margin-top: 16px; }
+#kc-info a, .instruction a { color: var(--blue) !important; }
+
+/* mensagem de erro por campo (register/reset/otp): vermelho escuro AA, não some */
+.pf-c-form__helper-text.pf-m-error, .pf-v5-c-form__helper-text.pf-m-error,
+.pf-m-error.kc-feedback-text, span[id^="input-error"] {
+  color: #8A1C1C !important;            /* s/ #fff ≈ 8.9:1 (AA) */
+  font-weight: 600 !important;
+}
+
+/* "* Campos obrigatórios" (register) e asterisco obrigatório */
+.subtitle { color: var(--text-soft) !important; font-size: 12px !important; }
+.required { color: #B42318 !important; font-weight: 700; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SELECT-AUTHENTICATOR  ("Entre de outra forma" → escolher o método/Token)
+   Bug corrigido: cada método é um <button type="submit"> e caía na regra
+   genérica de botão (fundo azul, texto branco, height:46px !important), que
+   esmagava ícone+título+descrição num tampão azul de baixa leitura. Além
+   disso o login.css do tema-pai NÃO é carregado (styles=css/brand.css o
+   substitui), então .select-auth-box-* não tinha NENHUM estilo de card.
+   Aqui damos estilo EXPLÍCITO de alto contraste: tile branco, texto escuro,
+   ícone azul visível, borda nítida, hover/focus claros, alvo ≥44px.
+   Classes reais confirmadas no base/login/select-authenticator.ftl +
+   keycloak/login/theme.properties (KC 26.0.8). Cobrimos também pf-v5 e a
+   lista #kc-select-credential-list por robustez entre versões.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* container: pilha vertical com respiro (mata o pf-l-stack default) */
+#kc-select-credential-form .select-auth-container,
+.select-auth-container,
+#kc-select-credential-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  margin-top: 20px !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+/* o TILE clicável — desfaz o botão azul e vira card branco de alto contraste.
+   Especificidade elevada (#form + button.classe) p/ vencer o !important genérico. */
+#kc-select-credential-form button.select-auth-box-parent,
+.select-auth-container button.select-auth-box-parent,
+.select-auth-container .select-auth-box-parent,
+#kc-select-credential-list li,
+#kc-select-credential-list .pf-c-tile,
+#kc-select-credential-list .pf-v5-c-tile {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-height: 64px !important;      /* alvo de toque bem acima de 44px */
+  height: auto !important;          /* mata o height:46px !important herdado */
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  text-align: left !important;
+  color: var(--text) !important;    /* mata o color:#fff herdado */
+  background: #fff !important;      /* mata o background azul herdado */
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(4,28,48,.06) !important;
+  cursor: pointer !important;
+  font: inherit !important;
+  transition: border-color .12s, background .12s, box-shadow .12s;
+}
+#kc-select-credential-form button.select-auth-box-parent:hover,
+.select-auth-container .select-auth-box-parent:hover,
+#kc-select-credential-list li:hover,
+#kc-select-credential-list .pf-c-tile:hover {
+  background: var(--bg-soft) !important;
+  border-color: var(--blue) !important;
+  box-shadow: 0 4px 12px rgba(4,28,48,.10) !important;
+}
+#kc-select-credential-form button.select-auth-box-parent:focus-visible,
+.select-auth-container .select-auth-box-parent:focus-visible,
+#kc-select-credential-list li:focus-within {
+  outline: 3px solid rgba(0,115,189,.45) !important;
+  outline-offset: 2px !important;
+  border-color: var(--blue) !important;
+}
+
+/* ícone do método — quadro azul visível à esquerda */
+.select-auth-box-icon {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important; height: 40px !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  background: rgba(0,115,189,.10) !important;
+  color: var(--blue) !important;
+}
+.select-auth-box-icon i,
+.select-auth-box-icon-properties {
+  margin: 0 !important;
+  font-size: 20px !important;       /* mata o fa-2x gigante herdado */
+  line-height: 1 !important;
+  color: var(--blue) !important;    /* #0073BD s/ #fff ≈ 5:1 */
+}
+
+/* corpo (título + descrição) ocupa o espaço; empilha vertical */
+.select-auth-box-parent > .pf-l-split__item.pf-l-stack,
+.select-auth-box-parent > .pf-l-stack,
+.select-auth-box-headers {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+
+/* título do método — navy forte, alto contraste (≈9.9:1) */
+.select-auth-box-headline,
+.select-auth-box-header,
+.select-auth-box-parent .pf-c-title,
+.select-auth-box-parent .pf-v5-c-title {
+  margin: 0 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--navy) !important;
+}
+/* descrição/ajuda do método — texto suave legível (≈6.5:1) */
+.select-auth-box-desc,
+.select-auth-box-paragraph {
+  margin: 0 !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  color: var(--text-soft) !important;
+}
+
+/* espaçador vazio do PatternFly: remove p/ layout previsível */
+.select-auth-box-parent > .pf-l-split__item.pf-m-fill { display: none !important; }
+
+/* seta ">" à direita — visível */
+.select-auth-box-arrow {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 0 0 auto !important;
+  color: var(--text-soft) !important;
+}
+.select-auth-box-arrow i { color: var(--text-soft) !important; font-size: 16px !important; }
+
+/* ── login-otp: seleção de dispositivo OTP (pf-c-tile, quando há +de 1) ───── */
+.pf-c-tile, .pf-v5-c-tile {
+  display: block !important;
+  padding: 14px 16px !important;
+  margin-bottom: 10px !important;
+  background: #fff !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+}
+.pf-c-tile__title, .pf-v5-c-tile__title { color: var(--text) !important; font-weight: 600 !important; }
+.pf-c-tile__icon, .pf-v5-c-tile__icon { color: var(--blue) !important; }
+/* estado selecionado (radio :checked + label.tile) */
+.pf-c-tile__input:checked + .pf-c-tile,
+.pf-v5-c-tile__input:checked + .pf-v5-c-tile {
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 2px rgba(0,115,189,.25) inset !important;
+  background: var(--bg-soft) !important;
+}
+
+/* ── otp-code-dev.ftl: botão "Enviar outro código" como SECUNDÁRIO ────────── */
+#kc-otp-resend-form input[type="submit"] {
+  background: #fff !important;
+  color: var(--blue-700) !important;     /* #005A94 s/ #fff ≈ 7.3:1 (AA) */
+  border: 1px solid var(--border) !important;
+}
+#kc-otp-resend-form input[type="submit"]:hover {
+  background: var(--bg-soft) !important;
+  border-color: var(--blue) !important;
+}
+
+/* ── Foco visível global (acessibilidade / navegação por teclado) ─────────── */
+a:focus-visible, button:focus-visible,
+input:focus-visible, .pf-c-button:focus-visible {
+  outline: 3px solid rgba(0,115,189,.45) !important;
+  outline-offset: 2px;
+}
+
+/* ── Subtítulo contextual por tela (o texto sob o H1). Sem :has, cai no
+   default de login. Melhora a clareza em escolher-método/cadastro/reset/otp. */
+.card-pf:has(#kc-select-credential-form) .login-pf-header::after { content: "Escolha como você quer entrar."; }
+.card-pf:has(#kc-register-form)          .login-pf-header::after { content: "Crie sua conta da Portal Telemedicina."; }
+.card-pf:has(#kc-reset-password-form)    .login-pf-header::after { content: "Recupere o acesso à sua conta."; }
+.card-pf:has(#kc-otp-login-form)         .login-pf-header::after { content: "Digite o código de uso único que enviamos."; }
+
 /* ── Mobile: arte some, cartão centralizado, logo no topo do cartão ───────── */
 @media (max-width: 860px) {
   body::before { display: none; }
   .login-pf-page { align-items: center !important; padding: 24px 16px !important; }
   .card-pf::before { display: block; }
+  /* tiles de método: largura total, respiro confortável no toque */
+  .select-auth-box-parent { padding: 16px !important; min-height: 68px !important; }
 }
