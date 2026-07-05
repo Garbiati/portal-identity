@@ -30,10 +30,14 @@
       "rootUrl": "${FRONT_BASE_URL}",
       "baseUrl": "/",
       "redirectUris": [
-        "${FRONT_BASE_URL}/*"
+        "${FRONT_BASE_URL}/app*",
+        "http://localhost:5173/app*",
+        "http://localhost:5174/app*"
       ],
       "webOrigins": [
-        "${FRONT_BASE_URL}"
+        "${FRONT_BASE_URL}",
+        "http://localhost:5173",
+        "http://localhost:5174"
       ],
       "attributes": {
         "pkce.code.challenge.method": "S256",
@@ -228,5 +232,11 @@
   "defaultLocale": "pt-BR",
   "supportedLocales": [
     "pt-BR"
-  ]
+  ],
+  "bruteForceProtected": true,
+  "failureFactor": 20,
+  "waitIncrementSeconds": 60,
+  "passwordPolicy": "length(10) and notUsername and notEmail",
+  "revokeRefreshToken": true,
+  "refreshTokenMaxReuse": 0
 }
