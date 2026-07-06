@@ -1,21 +1,26 @@
-/* Tema de login Doctor-Hub / Portal Telemedicina (D-074).
+/* Tema de login Doctor Hub / Portal Telemedicina (rebranding 2026-07-05: navy profundo + OURO).
    DESKTOP: split intencional — painel-marca navy (esquerda, ~46vw) + coluna clara do formulário
    (direita) com o cartão centralizado V+H (espelha o app: sidebar navy + conteúdo claro).
    MOBILE: cartão único branco sobre o gradiente navy da marca (com o logo no topo do cartão).
+   Paleta = tokens do app (doctor-hub-web/tokens.css): navy #0E1B2E/#13233B · ouro #C6A052 (acento,
+   sobre navy) · ouro escuro #8A6A2E (AA sobre claro: "Hub", foco, filetes). Ação primária = NAVY.
    `!important` em vários pontos porque o CSS do tema base também carrega. */
 
 :root {
-  --navy-900: #043452;
-  --navy: #054671;
-  --navy-700: #0A5A8C;
-  --blue: #0073BD;
-  --blue-700: #005A94;
-  --orange: #B85410;
-  --orange-bright: #F07A1E;
-  --text: #1B2733;
-  --text-soft: #51606E;
-  --border: #D5DEE6;
-  --bg-soft: #F4F7FA;
+  --navy-950: #0A1521;
+  --navy-900: #0E1B2E;             /* marca / títulos */
+  --navy-800: #13233B;             /* ação primária (botão entrar) */
+  --navy-700: #1B2E48;
+  --gold:       #C6A052;           /* ouro-500 — acento premium sobre navy */
+  --gold-bright:#D4B472;           /* ouro claro p/ realce sobre navy */
+  --gold-dark:  #8A6A2E;           /* ouro-700 — AA sobre claro (foco, filete, "Hub") */
+  --gold-hover: #B0894A;
+  --accent:     #13233B;           /* interativo (links/ativo) = navy-800 (14:1 sobre claro) */
+  --accent-hover:#0E1B2E;
+  --text:      #141B24;
+  --text-soft: #45515F;            /* #45515F s/ #fff ≈ 7.2:1 (AA) */
+  --border:    #E7E4DB;
+  --bg-soft:   #F7F6F2;            /* off-white quente (paper do app) */
   --panel-w: 46vw;                 /* largura do painel-marca à esquerda (desktop) */
 }
 
@@ -38,8 +43,9 @@ body.login-pf, .login-pf body, #kc-container, .login-pf-page {
 #kc-header, .login-pf-page-header { display: none !important; }
 
 /* PAINEL-MARCA (esquerda): metade fixa navy que preenche a coluna inteira, com a arte da marca
-   (logo + headline + lead) centralizada e um brilho azul para dar profundidade/presença. A borda
-   direita ganha uma sombra suave, então o split lê como INTENCIONAL contra a coluna clara. */
+   (logo + headline + lead) centralizada e um leve brilho OURO para dar profundidade/presença. A borda
+   direita ganha uma sombra suave, então o split lê como INTENCIONAL contra a coluna clara.
+   Gradiente = mesmo do app (shell.css): #1C3350 → navy-800 → navy-950. */
 body::before {
   content: "";
   position: fixed;
@@ -49,12 +55,12 @@ body::before {
   height: 100vh;
   background-image:
     url("../img/brand.svg"),
-    radial-gradient(58% 46% at 42% 40%, rgba(0,115,189,.38) 0%, rgba(0,115,189,0) 70%),
-    linear-gradient(155deg, var(--navy-700) 0%, var(--navy) 55%, var(--navy-900) 100%);
+    radial-gradient(60% 48% at 40% 38%, rgba(198,160,82,.10) 0%, rgba(198,160,82,0) 70%),
+    linear-gradient(155deg, #1C3350 0%, var(--navy-800) 55%, var(--navy-950) 100%);
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: center, center, center;
   background-size: min(440px, 66%) auto, 130% 130%, cover;
-  box-shadow: inset -1px 0 0 rgba(255,255,255,.06), 8px 0 28px rgba(4,28,48,.16);
+  box-shadow: inset -1px 0 0 rgba(198,160,82,.10), 8px 0 28px rgba(10,21,33,.22);
   pointer-events: none;
   z-index: 0;
 }
@@ -82,7 +88,7 @@ body::before {
   background: #fff !important;
   border: 1px solid var(--border) !important;
   border-radius: 18px !important;
-  box-shadow: 0 12px 34px rgba(4,28,48,.10), 0 2px 8px rgba(4,28,48,.05) !important;
+  box-shadow: 0 12px 34px rgba(10,21,33,.10), 0 2px 8px rgba(10,21,33,.05) !important;
 }
 
 /* logo no topo do cartão — só no mobile (no desktop a marca está na arte à esquerda) */
@@ -99,7 +105,7 @@ body::before {
   margin: 0 !important;
   font-size: 26px !important;
   font-weight: 700 !important;
-  color: var(--navy) !important;
+  color: var(--navy-900) !important;
   text-align: left !important;
 }
 .login-pf-header::after {
@@ -134,12 +140,13 @@ input[type="text"], input[type="email"], input[type="password"],
   box-shadow: none !important;
   outline: none !important;
 }
+/* foco de campo: filete OURO ESCURO (5:1 sobre branco, AA 1.4.11) + halo suave */
 input:focus, .form-control:focus, .pf-c-form-control:focus, .pf-v5-c-form-control:focus {
-  border-color: var(--blue) !important;
-  box-shadow: 0 0 0 3px rgba(0,115,189,.18) !important;
+  border-color: var(--gold-dark) !important;
+  box-shadow: 0 0 0 3px rgba(138,106,46,.22) !important;
 }
 
-/* botão entrar */
+/* botão entrar — NAVY elegante (texto branco 15:1, AA/AAA) */
 input[type="submit"], button[type="submit"], #kc-login,
 .btn-primary, .pf-c-button.pf-m-primary, .pf-v5-c-button.pf-m-primary {
   width: 100% !important;
@@ -148,15 +155,15 @@ input[type="submit"], button[type="submit"], #kc-login,
   font-size: 15px !important;
   font-weight: 600 !important;
   color: #fff !important;
-  background: var(--blue) !important;
+  background: var(--navy-800) !important;
   border: 0 !important;
   border-radius: 10px !important;
   cursor: pointer;
 }
-#kc-login:hover, .btn-primary:hover, .pf-c-button.pf-m-primary:hover { background: var(--blue-700) !important; }
+#kc-login:hover, .btn-primary:hover, .pf-c-button.pf-m-primary:hover { background: var(--navy-900) !important; }
 
-/* links */
-#kc-content a, .login-pf-page a { color: var(--blue) !important; text-decoration: none; font-weight: 500; }
+/* links — navy-800 (14:1, AA), sublinha no hover */
+#kc-content a, .login-pf-page a { color: var(--accent) !important; text-decoration: none; font-weight: 500; }
 #kc-content a:hover { text-decoration: underline; }
 
 #kc-form-options { margin: -4px 0 0; font-size: 13px; }
@@ -186,13 +193,13 @@ input[type="submit"], button[type="submit"], #kc-login,
 .pf-c-form__helper-text, .pf-v5-c-form__helper-text,
 #kc-otp-instruction, #kc-info, #kc-info-wrapper, .instruction,
 #kc-registration-terms-text {
-  color: var(--text-soft) !important;   /* #51606E s/ #fff ≈ 6.5:1 (AA) */
+  color: var(--text-soft) !important;   /* #45515F s/ #fff ≈ 7.2:1 (AA) */
   font-size: 13px !important;
   line-height: 1.45;
 }
 #kc-otp-instruction { margin: 0 0 14px !important; color: var(--text) !important; font-size: 14px !important; }
 #kc-info { margin-top: 16px; }
-#kc-info a, .instruction a { color: var(--blue) !important; }
+#kc-info a, .instruction a { color: var(--accent) !important; }
 
 /* mensagem de erro por campo (register/reset/otp): vermelho escuro AA, não some */
 .pf-c-form__helper-text.pf-m-error, .pf-v5-c-form__helper-text.pf-m-error,
@@ -208,12 +215,12 @@ input[type="submit"], button[type="submit"], #kc-login,
 /* ══════════════════════════════════════════════════════════════════════════
    SELECT-AUTHENTICATOR  ("Entre de outra forma" → escolher o método/Token)
    Bug corrigido: cada método é um <button type="submit"> e caía na regra
-   genérica de botão (fundo azul, texto branco, height:46px !important), que
-   esmagava ícone+título+descrição num tampão azul de baixa leitura. Além
+   genérica de botão (fundo navy, texto branco, height:46px !important), que
+   esmagava ícone+título+descrição num tampão navy de baixa leitura. Além
    disso o login.css do tema-pai NÃO é carregado (styles=css/brand.css o
    substitui), então .select-auth-box-* não tinha NENHUM estilo de card.
    Aqui damos estilo EXPLÍCITO de alto contraste: tile branco, texto escuro,
-   ícone azul visível, borda nítida, hover/focus claros, alvo ≥44px.
+   ícone em ouro escuro, borda nítida, hover/focus claros, alvo ≥44px.
    Classes reais confirmadas no base/login/select-authenticator.ftl +
    keycloak/login/theme.properties (KC 26.0.8). Cobrimos também pf-v5 e a
    lista #kc-select-credential-list por robustez entre versões.
@@ -231,7 +238,7 @@ input[type="submit"], button[type="submit"], #kc-login,
   list-style: none !important;
 }
 
-/* o TILE clicável — desfaz o botão azul e vira card branco de alto contraste.
+/* o TILE clicável — desfaz o botão navy e vira card branco de alto contraste.
    Especificidade elevada (#form + button.classe) p/ vencer o !important genérico. */
 #kc-select-credential-form button.select-auth-box-parent,
 .select-auth-container button.select-auth-box-parent,
@@ -249,10 +256,10 @@ input[type="submit"], button[type="submit"], #kc-login,
   padding: 14px 16px !important;
   text-align: left !important;
   color: var(--text) !important;    /* mata o color:#fff herdado */
-  background: #fff !important;      /* mata o background azul herdado */
+  background: #fff !important;      /* mata o background navy herdado */
   border: 1px solid var(--border) !important;
   border-radius: 12px !important;
-  box-shadow: 0 1px 2px rgba(4,28,48,.06) !important;
+  box-shadow: 0 1px 2px rgba(10,21,33,.06) !important;
   cursor: pointer !important;
   font: inherit !important;
   transition: border-color .12s, background .12s, box-shadow .12s;
@@ -262,18 +269,18 @@ input[type="submit"], button[type="submit"], #kc-login,
 #kc-select-credential-list li:hover,
 #kc-select-credential-list .pf-c-tile:hover {
   background: var(--bg-soft) !important;
-  border-color: var(--blue) !important;
-  box-shadow: 0 4px 12px rgba(4,28,48,.10) !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 4px 12px rgba(10,21,33,.10) !important;
 }
 #kc-select-credential-form button.select-auth-box-parent:focus-visible,
 .select-auth-container .select-auth-box-parent:focus-visible,
 #kc-select-credential-list li:focus-within {
-  outline: 3px solid rgba(0,115,189,.45) !important;
+  outline: 3px solid rgba(138,106,46,.5) !important;
   outline-offset: 2px !important;
-  border-color: var(--blue) !important;
+  border-color: var(--gold-dark) !important;
 }
 
-/* ícone do método — quadro azul visível à esquerda */
+/* ícone do método — quadro OURO pálido visível à esquerda, glifo ouro escuro (AA) */
 .select-auth-box-icon {
   flex: 0 0 auto !important;
   display: flex !important;
@@ -282,15 +289,15 @@ input[type="submit"], button[type="submit"], #kc-login,
   width: 40px !important; height: 40px !important;
   margin: 0 !important;
   border-radius: 10px !important;
-  background: rgba(0,115,189,.10) !important;
-  color: var(--blue) !important;
+  background: rgba(198,160,82,.14) !important;
+  color: var(--gold-dark) !important;
 }
 .select-auth-box-icon i,
 .select-auth-box-icon-properties {
   margin: 0 !important;
   font-size: 20px !important;       /* mata o fa-2x gigante herdado */
   line-height: 1 !important;
-  color: var(--blue) !important;    /* #0073BD s/ #fff ≈ 5:1 */
+  color: var(--gold-dark) !important;   /* #8A6A2E s/ ouro pálido ≈ 4.7:1 (AA ícone) */
 }
 
 /* corpo (título + descrição) ocupa o espaço; empilha vertical */
@@ -304,7 +311,7 @@ input[type="submit"], button[type="submit"], #kc-login,
   min-width: 0 !important;
 }
 
-/* título do método — navy forte, alto contraste (≈9.9:1) */
+/* título do método — navy forte, alto contraste (≈13:1) */
 .select-auth-box-headline,
 .select-auth-box-header,
 .select-auth-box-parent .pf-c-title,
@@ -312,9 +319,9 @@ input[type="submit"], button[type="submit"], #kc-login,
   margin: 0 !important;
   font-size: 15px !important;
   font-weight: 700 !important;
-  color: var(--navy) !important;
+  color: var(--navy-900) !important;
 }
-/* descrição/ajuda do método — texto suave legível (≈6.5:1) */
+/* descrição/ajuda do método — texto suave legível (≈7.2:1) */
 .select-auth-box-desc,
 .select-auth-box-paragraph {
   margin: 0 !important;
@@ -349,30 +356,30 @@ input[type="submit"], button[type="submit"], #kc-login,
   cursor: pointer !important;
 }
 .pf-c-tile__title, .pf-v5-c-tile__title { color: var(--text) !important; font-weight: 600 !important; }
-.pf-c-tile__icon, .pf-v5-c-tile__icon { color: var(--blue) !important; }
-/* estado selecionado (radio :checked + label.tile) */
+.pf-c-tile__icon, .pf-v5-c-tile__icon { color: var(--gold-dark) !important; }
+/* estado selecionado (radio :checked + label.tile) — filete/halo OURO */
 .pf-c-tile__input:checked + .pf-c-tile,
 .pf-v5-c-tile__input:checked + .pf-v5-c-tile {
-  border-color: var(--blue) !important;
-  box-shadow: 0 0 0 2px rgba(0,115,189,.25) inset !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 2px rgba(198,160,82,.28) inset !important;
   background: var(--bg-soft) !important;
 }
 
 /* ── otp-code-dev.ftl: botão "Enviar outro código" como SECUNDÁRIO ────────── */
 #kc-otp-resend-form input[type="submit"] {
   background: #fff !important;
-  color: var(--blue-700) !important;     /* #005A94 s/ #fff ≈ 7.3:1 (AA) */
+  color: var(--accent) !important;       /* navy-800 s/ #fff ≈ 14:1 (AA) */
   border: 1px solid var(--border) !important;
 }
 #kc-otp-resend-form input[type="submit"]:hover {
   background: var(--bg-soft) !important;
-  border-color: var(--blue) !important;
+  border-color: var(--gold) !important;
 }
 
-/* ── Foco visível global (acessibilidade / navegação por teclado) ─────────── */
+/* ── Foco visível global (acessibilidade / navegação por teclado) — anel OURO escuro ─────────── */
 a:focus-visible, button:focus-visible,
 input:focus-visible, .pf-c-button:focus-visible {
-  outline: 3px solid rgba(0,115,189,.45) !important;
+  outline: 3px solid rgba(138,106,46,.55) !important;
   outline-offset: 2px;
 }
 
@@ -388,7 +395,7 @@ input:focus-visible, .pf-c-button:focus-visible {
 @media (max-width: 860px) {
   html, body,
   body.login-pf, .login-pf body, #kc-container, .login-pf-page {
-    background: linear-gradient(150deg, var(--navy-700) 0%, var(--navy) 52%, var(--navy-900) 100%) !important;
+    background: linear-gradient(150deg, #1C3350 0%, var(--navy-800) 52%, var(--navy-950) 100%) !important;
     background-attachment: fixed !important;
   }
   body::before { display: none; }
@@ -400,7 +407,7 @@ input:focus-visible, .pf-c-button:focus-visible {
   .card-pf {
     width: min(420px, 92vw) !important;
     border-color: transparent !important;
-    box-shadow: 0 20px 50px rgba(4,28,48,.34) !important;
+    box-shadow: 0 20px 50px rgba(10,21,33,.40) !important;
   }
   .card-pf::before { display: block; }
   /* tiles de método: largura total, respiro confortável no toque */

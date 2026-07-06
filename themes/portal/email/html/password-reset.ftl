@@ -6,20 +6,20 @@
 <#assign greetName = (user.firstName)!(firstName!'')>
 <@layout.emailLayout preheader=msg("passwordResetPreheader")>
 
-<h1 style="margin:0 0 18px 0; font-size:22px; line-height:1.3; color:#054671; font-weight:700; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">Redefinição de senha</h1>
+<h1 style="margin:0 0 18px 0; font-size:22px; line-height:1.3; color:#0E1B2E; font-weight:700; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">Redefinição de senha</h1>
 
 <p style="margin:0 0 16px 0;"><#if greetName?has_content>Olá, ${greetName},<#else>Olá,</#if></p>
 
-<p style="margin:0 0 18px 0;">Recebemos um pedido para redefinir a senha da sua conta no <strong>doc hub</strong>. Se foi você, clique no botão abaixo para criar uma nova senha.</p>
+<p style="margin:0 0 18px 0;">Recebemos um pedido para redefinir a senha da sua conta no <strong>Doctor Hub</strong>. Se foi você, clique no botão abaixo para criar uma nova senha.</p>
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 26px 0;">
-  <tr><td style="background-color:#F4F7FA; border-left:4px solid #0073BD; border-radius:6px; padding:14px 16px; font-size:14px; line-height:1.55; color:#51606E;">${msg("productDescription")}</td></tr>
+  <tr><td style="background-color:#F4F7FA; border-left:4px solid #C6A052; border-radius:6px; padding:14px 16px; font-size:14px; line-height:1.55; color:#51606E;">${msg("productDescription")}</td></tr>
 </table>
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px 0;">
   <tr><td align="center">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-      <tr><td align="center" bgcolor="#0073BD" style="border-radius:8px;">
+      <tr><td align="center" bgcolor="#13233B" style="border-radius:8px;">
         <a href="${link}" target="_blank" style="display:inline-block; padding:14px 34px; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:16px; font-weight:600; line-height:1.2; color:#ffffff; text-decoration:none; border-radius:8px;">Redefinir senha</a>
       </td></tr>
     </table>
@@ -27,7 +27,7 @@
 </table>
 
 <p style="margin:0 0 6px 0; font-size:14px; color:#51606E;">Se o botão não funcionar, copie e cole este endereço no seu navegador:</p>
-<p style="margin:0 0 22px 0; font-size:13px; line-height:1.5; word-break:break-all;"><a href="${link}" target="_blank" style="color:#0073BD; text-decoration:underline;">${link}</a></p>
+<p style="margin:0 0 22px 0; font-size:13px; line-height:1.5; word-break:break-all;"><a href="${link}" target="_blank" style="color:#13233B; text-decoration:underline;">${link}</a></p>
 
 <p style="margin:0 0 16px 0; font-size:14px; color:#51606E;">Por segurança, este link expira em <strong>${linkExpirationFormatter(linkExpiration)}</strong>.</p>
 

@@ -2,9 +2,9 @@
 <#assign greetName = (user.firstName)!(firstName!'')>
 <#if greetName?has_content>Olá, ${greetName}!<#else>Olá!</#if>
 
-Confirme seu e-mail — doc hub
+Confirme seu e-mail — Doctor Hub
 
-Para concluir a configuração do seu acesso ao doc hub, confirme que este é o seu endereço de e-mail acessando o link abaixo:
+Para concluir a configuração do seu acesso ao Doctor Hub, confirme que este é o seu endereço de e-mail acessando o link abaixo:
 
 ${link}
 

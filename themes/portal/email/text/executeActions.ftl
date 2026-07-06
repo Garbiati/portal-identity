@@ -2,9 +2,9 @@
 <#assign greetName = (user.firstName)!(firstName!'')>
 <#if greetName?has_content>Olá, ${greetName}!<#else>Olá!</#if>
 
-Bem-vindo(a) ao doc hub.
+Bem-vindo(a) ao Doctor Hub.
 
-Você está recebendo este e-mail porque um administrador criou o seu acesso ao doc hub. Para começar a usar, defina a sua senha neste endereço:
+Você está recebendo este e-mail porque um administrador criou o seu acesso ao Doctor Hub. Para começar a usar, defina a sua senha neste endereço:
 
 ${link}
 

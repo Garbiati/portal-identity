@@ -2,9 +2,9 @@
 <#assign greetName = (user.firstName)!(firstName!'')>
 <#if greetName?has_content>Olá, ${greetName}!<#else>Olá!</#if>
 
-Redefinição de senha — doc hub
+Redefinição de senha — Doctor Hub
 
-Recebemos um pedido para redefinir a senha da sua conta no doc hub. Se foi você, crie uma nova senha neste endereço:
+Recebemos um pedido para redefinir a senha da sua conta no Doctor Hub. Se foi você, crie uma nova senha neste endereço:
 
 ${link}
 
